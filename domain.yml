@@ -2,152 +2,113 @@ session_config:
   session_expiration_time: 0
   carry_over_slots_to_new_session: true
 intents:
-- transfer_money:
-    use_entities: []
-- inform
-- pay_cc:
-    use_entities: []
-- greet
-- goodbye
+- search_stock:
+    use_entities: 
+    - stock_number
+    - stock_location
+    - stock_industry
+- stock_detail:
+    use_entities: 
+    - stock_number
+- stock_opinions:
+    use_entities: 
+    - stock_number
+- buy_stock:
+    use_entities: 
+    - stock_number
+    - hand
+- sell_stock:
+    use_entities: 
+    - hand
+    - stock_number
+- account_detail
+- stock_balance: 
+    use_entities: 
+    - stock_number
+- ac
 - affirm
 - deny
+- capacity
+- greet
+- goodbye
 - thankyou
-- ask_transfer_charge
-- search_transactions:
-    use_entities: []
-- check_balance:
-    use_entities:
-    - credit_card
-    - account_type
-- check_earnings:
-    use_entities: []
-- check_recipients
 - session_start
 - restart
-- trigger_handoff
-- human_handoff
-- handoff:
-    triggers: utter_greet
 - help
 
 entities:
-- amount-of-money
-- payment_amount
-- credit_card
-- payment_date
-- vendor_name
-- time
-- PERSON
-- number
-- account_type
-- handoff_to
+- stock_location
+- stock_industry
+- stock_number
+- hand
 slots:
-  PERSON:
-    type: unfeaturized
   account_balance:
-    type: unfeaturized
-  amount_of_money:
-    type: unfeaturized
-  amount_transferred:
-    type: unfeaturized
+    type: float
+  stock_detail:
+    type: any
+  stock_name:
+    type: text
+  stock_price:
+    type: float
+  stock_balance:
+    type: any
+  stock_search_detail:
+    type: text
+  paymeny_amount:
+    type: float
     initial_value: 0
+  transaction_type:
+    type: categorical
+    values: 
+      - buy
+      - sell
+  stock_number:
+    type: categorical
+    values: 
+      - 00001
+      - 00002
+      - 00003
+      - 00004
+      - 00005
+  hand:
+    type: text
+  date:
+    type: any
+  date_formatted:
+    type: text
   confirm:
-    type: unfeaturized
-  credit_card:
-    type: unfeaturized
-  credit_card_balance:
-    type: unfeaturized
-  currency:
-    type: unfeaturized
-  end_time:
-    type: unfeaturized
-  end_time_formatted:
-    type: unfeaturized
-  grain:
-    type: unfeaturized
-  known_recipients:
-    type: unfeaturized
-  payment_amount:
-    type: unfeaturized
-  payment_amount_type:
-    type: unfeaturized
-    initial_value: ''
-  requested_slot:
-    type: unfeaturized
-  search_type:
-    type: unfeaturized
-  start_time:
-    type: unfeaturized
-  start_time_formatted:
-    type: unfeaturized
-  time:
-    type: unfeaturized
-  time_formatted:
-    type: unfeaturized
-  transaction_history:
-    type: unfeaturized
-  vendor_list:
-    type: unfeaturized
-  vendor_name:
-    type: unfeaturized
-  handoff_to:
-    type: unfeaturized
+    type: bool
 responses:
-  utter_ask_transfer_form_amount_of_money:
-  - text: How much money do you want to transfer?
-  utter_ask_transfer_form_PERSON:
-  - text: Who do you want to transfer money to?
+  utter_greet:
+  - text: Hi! I'm your Financial Assistant!
+  utter_help:
+    - text: "I can help you with your financial accounts.
+        \nYou can ask me things like:
+        \n- What's my account balance?
+        \n- Buy stock
+        \n- Sell stock
+        \n- Stock detail"
   utter_goodbye:
   - text: Bye
   utter_noworries:
   - text: You're welcome :)
-  utter_transfer_complete:
-  - text: Successfully transferred {currency}{amount_of_money} to {PERSON}.
-  utter_transfer_charge:
-  - text: You are entitled to six transfers within a statement cycle before being
-      charged. For subsequent transfers you will be charged {currency}10 per transaction.
-  utter_ask_cc_payment_form_payment_amount:
-  - text: How much do you want to pay?
-  utter_ask_cc_payment_form_credit_card:
-  - text: Towards which credit card account do you want to make a payment?
-  utter_ask_cc_payment_form_time:
-  - text: For which date would you like to schedule the payment?
-  utter_ask_transact_search_form_vendor_name:
-  - text: For which vendor do you want to see transactions?  e.g Starbucks, Target,
-      Amazon
-  utter_ask_transact_search_form_time:
-  - text: In which timeframe would you like to search for transactions?
-  utter_no_payment_amount:
-  - text: Sorry, I don't understand that payment amount.
-  utter_no_paymentdate:
-  - text: Sorry, that is not a valid payment date.
-  utter_no_creditcard:
-  - text: Sorry, that is not a valid credit card account to make payments towards.
-  utter_no_vendor_name:
-  - text: Sorry, that's not a recognized vendor.
-  utter_no_transactdate:
-  - text: Sorry, that's not a recognized time frame.
-  utter_cc_pay_scheduled:
-  - text: Payment of {currency}{payment_amount}{payment_amount_type} towards your
-      {credit_card} account scheduled to be paid at {time_formatted}.
-  utter_searching_spend_transactions:
-  - text: Searching transactions{vendor_name} between {start_time_formatted} and {end_time_formatted}...
-  utter_found_spend_transactions:
-  - text: I found {numtransacts} transactions{vendor_name} totalling {currency}{total}.
-  utter_searching_deposit_transactions:
-  - text: Searching deposits made to your account between {start_time_formatted} and
-      {end_time_formatted}...
-  utter_found_deposit_transactions:
-  - text: I found {numtransacts} deposits made to your account totalling {currency}{total}
+  utter_ask_transaction_form_stock_number:
+  - text: Which stock you want to {transaction_type}?
+  utter_ask_transaction_form_hand:
+  - text: How many hand of {stock_number} you want to {transaction_type}?
+  utter_ask_transaction_form_confirm:
+  - buttons:
+    - payload: Yes
+      title: Yes
+    - payload: No
+      title: No, cancel the search
+    text: Would you like to {transaction_type} {hand} {stock_number}?
+  utter_ask_stock_detail_form_stock_number:
+  - text: Which stock you want to find?
+  utter_stock_detail:
+  - text: '{stock_number} is {stock_name} with ${stock_price}}'
   utter_ask_rephrase:
   - text: I didn't quite understand that. Can you rephrase?
-  utter_ask_switch_goal:
-  - text: We haven't completed the transaction search yet. Are you sure you want to
-      switch to transfer money?
-  utter_ask_back_to_transact:
-  - text: Would you like to go back to the transaction search now?
-  utter_ask_back_to_transfer:
-  - text: Would you like to go back to transferring money now?
   utter_ok:
   - text: 👍
   - text: ok
@@ -155,66 +116,58 @@ responses:
   - text: Would you like to continue?
   utter_default:
   - text: Sorry, I didn't get that. Could you rephrase?
-  utter_ask_cc_payment_form_confirm:
-  - buttons:
-    - payload: /affirm
-      title: Yes
-    - payload: /deny
-      title: No, cancel the transaction
-    text: Would you like to schedule a payment of {currency}{payment_amount}{payment_amount_type}
-      towards your {credit_card} account for {time_formatted}?
-  utter_ask_transfer_form_confirm:
-  - buttons:
-    - payload: /affirm
-      title: Yes
-    - payload: /deny
-      title: No, cancel the transaction
-    text: Would you like to transfer {currency}{amount_of_money} to {PERSON}?
-  utter_transfer_cancelled:
-  - text: Transfer cancelled.
-  utter_cc_pay_cancelled:
-  - text: Credit card account payment cancelled.
+  utter_transaction_cancelled:
+  - text: Order cancelled.
   utter_account_balance:
-  - text: Your balance is {currency}{init_account_balance}.
+  - text: Your balance is {account_balance}.
   utter_changed_account_balance:
-  - text: Your balance was {currency}{init_account_balance} and is now {currency}{account_balance}
+  - text: Your balance was {init_account_balance} and is now {account_balance}
       after transfers and payments.
-  utter_unknown_recipient:
-  - text: Sorry, {PERSON} is not in your list of known recipients.
   utter_insufficient_funds:
-  - text: Sorry, you don't have enough money to do that!
-  utter_credit_card_balance:
-  - text: The current balance for your {credit_card} account is {currency}{amount_of_money}.
-  utter_recipients:
-  - text: These are your known recpients to whom you can send money:{formatted_recipients}
-  utter_greet:
-  - text: Hi! I'm your Financial Assistant!
-  utter_ask_handoff:
-  - text: It looks like you want to be transferred to a human agent.
-  utter_handoff:
-  - text: Alright, I'll try to transfer you.
-  utter_wouldve_handed_off:
-  - text: If you were talking to me via chatroom, I would have handed you off to {handoffhost}. 
-  utter_no_handoff:
-  - text: Since you haven't configured a host to hand off to, I can't send you anywhere!
-  utter_ask_whatelse:
-  - text: What else can I help you with?
-  utter_help:
-    - text: "I can help you with your financial accounts.
-        \nYou can ask me things like:
-        \n- What's my account balance?
-        \n- Pay off my credit card
-        \n- What did I spend at Target last month?
-        \n- I need to transfer money"
+  - text: Sorry, you don't have enough money to buy {stock_number}!
+  utter_insufficient_stocks:
+  - text: Sorry, you don't have enough hands {stock_number} to sell!
+  
 actions:
 - action_account_balance
+- action_stock_balance
+- action_stock_detail
+- action_transaction
 - action_session_start
 - action_restart
-- action_credit_card_balance
-- action_recipients
-- action_handoff
-- action_handoff_options
 forms:
-- cc_payment_form
-- transfer_form
-- transact_search_form
+  transaction_form:
+    transaction_type:
+    - type: from_trigger_intent
+      value: buy
+      intent: buy_stock
+    - type: from_trigger_intent
+      value: sell
+      intent: sell_stock
+    stock_number:
+    - type: from_entity
+      entity: stock_number
+    hand:
+    - type: from_entity
+      entity: hand
+    confirm:
+    - type: from_intent
+      value: true
+      intent: affirm
+    - type: from_intent
+      value: false
+      intent: deny
+  stock_search_form:
+    stock_search_detail:
+    - type: from_entity
+      entity: stock_location
+    - type: from_entity
+      entity: stock_industry
+  stock_balance_form:
+    stock_number:
+    - type: from_entity
+      entity: stock_number
+  stock_detail_form:
+    stock_number:
+    - type: from_entity
+      entity: stock_number

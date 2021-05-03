@@ -1,0 +1,145 @@
+
+nlu:
+  - intent: search_stock
+    examples: |
+      - I want to find [00001](stock_number)
+      - Give me a type of stock
+      - I want to find stock in [HK](stock_location)
+      - [Banks](stock_industry)
+      - Find stock of [Banks](stock_industry)
+      - [HK](stock_location)
+  - intent: stock_detail
+    examples: |
+      - Please give me the detail of [00001](stock_number)
+      - Show me the detail of [00001](stock_number)
+      - [00001](stock_number)
+      - current price of [00001](stock_number)
+  - intent: stock_opinions
+    examples: |
+      - How does other people think about this stock
+      - Give me the current news about [00001](stock_number)
+      - General option of [00001](stock_number)
+      - [00001](stock_number) analysis
+  - intent: buy_stock
+    examples: |
+      - I want to buy in [20 hand](hands) [00001](stock_number)
+      - buy [00001](stock_number) as much as I can
+      - buy stock
+  - intent: sell_stock
+    examples: |
+      - sell [20 hand](hands) [00001](stock_number)
+      - sell stocks
+      - sell out
+  - intent: account_detail
+    examples: |
+      - I want to check my balance
+      - my account balance
+      - login
+      - my account
+      - setting
+  - intent: balance_detail
+    examples: |
+      - what stock I have brought
+      - the stock I own 
+      - how many hand [00001](stock_number) I own
+  - intent: affirm
+    examples: |
+      - indeed
+      - correct
+      - that sounds good
+      - yes
+      - yess please
+      - of course
+      - yup
+      - yeah
+      - yes please
+      - yes plz
+      - Sure
+      - Ok
+      - sweet
+      - cool,
+      - yes...
+  - intent: deny
+    examples: |
+      - not really
+      - no
+      - I don't think so
+      - never
+      - no way
+      - nope
+      - no thanks
+      - I dunno
+      - stop
+      - quit
+      - Nothing!
+      - nevermind
+  - intent: capacity
+    examples: |
+      - What can you do
+      - What can you answer me
+      - How do you help me 
+      - What do you related to
+      - What is your usage
+  - intent: greet
+    examples: |
+      - good morning
+      - hi
+      - hey there
+      - hey
+      - good evening
+      - hello
+      - Hey RASA!
+      - Hello?
+      - Hey Sara!
+      - HEY
+      - hello are you still there
+      - hallo
+      - HI
+      - Hey
+      - Hi
+      - hi!
+      - hello there
+      - hi there
+      - Hello
+      - hello its ella
+  - intent: goodbye
+    examples: |
+      - see you later
+      - goodbye
+      - i'm done
+      - bye
+      - Adios
+      - BYEE
+      - GOODBYE
+      - Thanks a lot. See ya later
+  - intent: thankyou
+    examples: |
+      - thank you goodbye
+      - okay thank you goodbye
+      - thank you bye
+      - um okay thank you good bye
+      - thank you
+      - and thats all thank you and good bye
+      - okay thank you
+      - thanks
+      - thanks goodbye
+      - thank you and good bye
+      - Thanks!
+  - lookup: stock_location
+    examples: |
+      - HK
+      - USA
+      - Japan
+  - lookup: stock_industry
+    examples: |
+      - E-Commerce
+      - Commercial
+      - Watch
+      - Banks
+  - regex: stock_number
+    examples: |
+      - \d{5}
+  - regex: hand
+    examples: |
+      - (\d+) hand
+      - (\d+)hand\b

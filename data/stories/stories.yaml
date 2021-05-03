@@ -1,0 +1,115 @@
+version: "2"
+stories: 
+
+- story: say greet
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - action: utter_help
+
+- story: say goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+
+- story: buy stock (with all input)
+  steps:
+  - intent: buy_stock
+    entities:
+    - stock_number: stock_number
+    - hand: hand
+  - action: utter_ask_transaction_form_confirm
+  - intent: affirm
+  - slot_was_set: 
+    - transaction_type: buy
+  - action: action_transaction
+
+- story: buy stock and check acount balance
+  steps:
+  - intent: buy_stock
+  - action: transaction_form
+  - active_loop: transaction_form
+  - active_loop: null
+  - action: action_transaction
+
+- story: sell stock (with all input)
+  steps:
+  - intent: sell_stock
+    entities:
+    - stock_number: stock_number
+    - hand: hand
+  - slot_was_set: 
+    - transaction_type: sell
+  - action: utter_ask_transaction_form_confirm
+  - intent: affirm
+  - action: action_transaction
+
+- story: sell stock and check acount balance
+  steps:
+  - intent: sell_stock
+  - action: transaction_form
+  - active_loop: transaction_form
+  - active_loop: null
+  - action: action_transaction
+
+- story: get stock detail (with stock_no)
+  steps:
+  - intent: stock_detail
+    entities:
+    - stock_number: stock_number
+  - action: action_stock_detail
+
+- story: get stock detail (with out stock_no)
+  steps:
+  - intent: stock_detail
+  - action: stock_detail_form
+  - active_loop: stock_detail_form
+  - active_loop: null
+  - action: action_stock_detail
+
+- story: get stock detail (with out stock_no)
+  steps:
+  - intent: stock_detail
+  - action: stock_detail_form
+  - active_loop: stock_detail_form
+  - intent: deny
+  - action: utter_ask_continue
+  - intent: deny
+  - action: action_deactivate_loop
+  - active_loop: null
+  - action: action_stock_detail
+
+
+- story: get stock detail (with stock_no)
+  steps:
+  - intent: stock_balance
+    entities:
+    - stock_number: stock_number
+  - action: action_stock_balance
+
+- story: get stock balance (with out stock_no)
+  steps:
+  - intent: stock_balance
+  - action: stock_balance_form
+  - active_loop: stock_balance_form
+  - active_loop: null
+  - action: action_stock_balance
+
+
+- story: get stock balance (with out stock_no)
+  steps:
+  - intent: stock_balance
+  - action: stock_balance_form
+  - active_loop: stock_balance_form
+  - intent: deny
+  - action: utter_ask_continue
+  - intent: deny
+  - action: action_deactivate_loop
+  - active_loop: null
+  - action: action_stock_balance
+
+- story: get balance 
+  steps:
+  - intent: account_detail
+  - action: utter_account_balance

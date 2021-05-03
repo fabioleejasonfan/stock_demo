@@ -14,9 +14,7 @@ pipeline:
   - name: DucklingHTTPExtractor
     url: http://localhost:8000
     dimensions:
-    - amount-of-money
     - time
-    - number
   - name: "SpacyNLP"
     model: "en_core_web_md"
   - name: "SpacyEntityExtractor"
@@ -24,7 +22,7 @@ pipeline:
 
 policies:
 - name: FallbackPolicy
-  nlu_threshold: 0.75
+  nlu_threshold: 0.4
 - name: AugmentedMemoizationPolicy
 - name: FormPolicy
 - name: MappingPolicy
