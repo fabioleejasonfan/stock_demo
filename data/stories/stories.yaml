@@ -12,6 +12,25 @@ stories:
   - intent: goodbye
   - action: utter_goodbye
 
+- story: buy stock (with all input)
+  steps:
+  - intent: affirm
+    entities:
+    - stock_number: stock_number
+    - hand: hand
+  - slot_was_set: 
+    - transaction_type: 'buy'
+  - action: action_transaction
+
+- story: sell stock (with all input)
+  steps:
+  - intent: affirm
+    entities:
+    - stock_number: stock_number
+    - hand: hand
+  - slot_was_set: 
+    - transaction_type: 'sell'
+  - action: action_transaction
 
 - story: buy stock (with all input)
   steps:
@@ -19,10 +38,9 @@ stories:
     entities:
     - stock_number: stock_number
     - hand: hand
-  - action: utter_ask_transaction_form_confirm
-  - intent: affirm
   - slot_was_set: 
-    - transaction_type: buy
+    - transaction_type: 'buy'
+    - confirm: True
   - action: action_transaction
 
 - story: buy stock and check acount balance
@@ -40,9 +58,8 @@ stories:
     - stock_number: stock_number
     - hand: hand
   - slot_was_set: 
-    - transaction_type: sell
-  - action: utter_ask_transaction_form_confirm
-  - intent: affirm
+    - transaction_type: 'sell'
+    - confirm: True
   - action: action_transaction
 
 - story: sell stock and check acount balance

@@ -22,12 +22,12 @@ nlu:
       - [00001](stock_number) analysis
   - intent: buy_stock
     examples: |
-      - I want to buy in [20 hand](hands) [00001](stock_number)
+      - I want to buy in [20 hand](hand) [00001](stock_number)
       - buy [00001](stock_number) as much as I can
       - buy stock
   - intent: sell_stock
     examples: |
-      - sell [20 hand](hands) [00001](stock_number)
+      - sell [20 hand](hand) [00001](stock_number)
       - sell stocks
       - sell out
   - intent: account_detail
@@ -141,5 +141,11 @@ nlu:
       - \d{5}
   - regex: hand
     examples: |
-      - (\d+) hand
-      - (\d+)hand\b
+      - \d+ hands
+      - \d+ hand
+      - \d+hands
+      - \d+hand
+      - \b\d+ hands\b
+      - \b\d+ hand\b
+      - \b\d+hands\b
+      - \b\d+hand\b

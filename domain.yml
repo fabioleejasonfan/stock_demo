@@ -1,3 +1,4 @@
+version: '2.0'
 session_config:
   session_expiration_time: 0
   carry_over_slots_to_new_session: true
@@ -152,10 +153,10 @@ forms:
       entity: hand
     confirm:
     - type: from_intent
-      value: true
+      value: True
       intent: affirm
     - type: from_intent
-      value: false
+      value: False
       intent: deny
   stock_search_form:
     stock_search_detail:

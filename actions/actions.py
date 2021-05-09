@@ -50,33 +50,33 @@ class ValidateTransactionForm(FormAction):
     def name(self) -> Text:
         return "validate_transaction_form"
 
-    def validate_hands(
+    def validate_hand(
         self,
         slot_value: Any,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> Dict[Text, Any]:
-        hands = int(re.sub("hand", "", slot_value))
+        hand = int(re.sub("hand", "", slot_value))
         transaction_type = tracker.get_slot("transaction_type")
         account_balance = tracker.get_slot("account_balance")
         stock_number = tracker.get_slot("stock_number")
         price = tracker.get_slot("stock_detail").get(stock_number).get("price")
-        currency_hands = (
+        currency_hand = (
             tracker.get_slot("stock_balance").get(stock_number).get("hands")
         )
 
-        if transaction_type == "buy" and int(hands) * price > account_balance:
+        if transaction_type == "buy" and int(hand) * price > account_balance:
             key = value.lower()
             amount = cc_balance.get(credit_card.lower()).get(key)
             amount_type = f" (your {key})"
 
             dispatcher.utter_message(template="utter_insufficient_funds")
             return {"amount_transferred": None}
-        elif transaction_type == "sell" and int(hands) < account_balance:
+        elif transaction_type == "sell" and int(hand) < account_balance:
             dispatcher.utter_message(template="utter_insufficient_stocks")
             return {"amount_transferred": None}
-        return {"hands": slot_value}
+        return {"hand": slot_value}
 
 
 class ActionTransaction(Action):
@@ -86,8 +86,7 @@ class ActionTransaction(Action):
     def run(self, dispatcher, tracker, domain):
         """Define what the form has to do
         after all required slots are filled"""
-        print(tracker.get_slot("hands"))
-        hands = int(re.sub("hands", "", tracker.get_slot("hands")))
+        hand = int(re.sub("hand", "", tracker.get_slot("hand")))
         account_balance = float(tracker.get_slot("account_balance"))
         stock_number = tracker.get_slot("stock_number")
         stock_price = (
@@ -97,21 +96,21 @@ class ActionTransaction(Action):
 
         if tracker.get_slot("confirm"):
             if tracker.get_slot("transaction_type") == "buy":
-                account_balance -= stock_price * hands
-                stock_balance[stock_number]["hands"] += int(hands)
+                account_balance -= stock_price * hand
+                stock_balance[stock_number]["hands"] += int(hand)
                 dispatcher.utter_message(
-                    f"You have used $HKD {stock_price * hands} brought {hands}hands {stock_number}"
+                    f"You have used $HKD {stock_price * hand} brought {hand} hands {stock_number}"
                 )
             else:
-                account_balance += stock_price * hands
-                stock_balance[stock_number]["hands"] -= int(hands)
+                account_balance += stock_price * hand
+                stock_balance[stock_number]["hands"] -= int(hand)
                 dispatcher.utter_message(
-                    f"You have sell {hands}hands {stock_number} to gain $HKD {stock_price * hands}"
+                    f"You have sell {hand} hands {stock_number} to gain $HKD {stock_price * hand}"
                 )
         else:
             dispatcher.utter_message(text="Order cancelled.")
         return [
-            SlotSet("hands", None),
+            SlotSet("hand", None),
             SlotSet("stock_number", None),
             SlotSet("confirm", None),
             SlotSet("stock_balance", stock_balance),
